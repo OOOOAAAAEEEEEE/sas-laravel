@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\GroupClasses;
 use App\Models\Student;
 use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
@@ -46,6 +47,8 @@ class StudentController extends Controller
 
         Student::create($validatedData);
 
+
+
         return redirect()->intended('/groupclasses')->with('success', 'Your absence has been added successfully!');
     }
 
@@ -59,10 +62,15 @@ class StudentController extends Controller
     {
 
         $times = $request->times;
+        $search = $request->search;
+
+        // dd($search);
 
         return view('main.student.index', [
             'title' => 'Students Absence',
-            'posts' => $student->perClass($id, $times),
+            'posts' => $student->perClass($id, $times)->paginate(15),
+            'times' => $times,
+            'check' => $student->checkingAbsence(),
         ]);
     }
 

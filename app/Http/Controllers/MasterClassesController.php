@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\MasterClasses;
+use App\Models\Student;
+use App\Models\GroupClasses;
 use App\Http\Requests\StoreMasterClassesRequest;
 use App\Http\Requests\UpdateMasterClassesRequest;
 
@@ -13,11 +15,12 @@ class MasterClassesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Student $student)
     {
         return view('main.master.class.index', [
             'title' => 'Master Classes',
-            'posts' => MasterClasses::latest()->paginate(15),
+            'posts' => MasterClasses::select()->paginate(15),
+            'check' => $student->checkingAbsence(),
         ]);
     }
 
@@ -26,9 +29,12 @@ class MasterClassesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Student $student)
     {
-        //
+        return view('main.master.class.create', [
+            'title' => 'Add Master Class',
+            'check' => $student->checkingAbsence(),
+        ]);
     }
 
     /**
@@ -39,7 +45,19 @@ class MasterClassesController extends Controller
      */
     public function store(StoreMasterClassesRequest $request)
     {
-        //
+        $validatedData = $request->validate([
+            'class' => 'required',
+        ]);
+
+        MasterClasses::create($validatedData);
+
+        $classID = MasterClasses::latest()->first();
+
+        GroupClasses::create([
+            'master_classes_id' => $classID->id,
+        ]);
+
+        return redirect()->intended('/master_classes')->with('success', 'Your data has been create successfully!');
     }
 
     /**
@@ -59,9 +77,13 @@ class MasterClassesController extends Controller
      * @param  \App\Models\MasterClasses  $masterClasses
      * @return \Illuminate\Http\Response
      */
-    public function edit(MasterClasses $masterClasses)
+    public function edit(MasterClasses $masterClasses, Student $student)
     {
-        //
+        return view('main.master.class.edit', [
+            'title' => 'Is there something wrong in here?',
+            'post' => $masterClasses->all(),
+            'check' => $student->checkingAbsence(),
+        ]);
     }
 
     /**
@@ -71,9 +93,15 @@ class MasterClassesController extends Controller
      * @param  \App\Models\MasterClasses  $masterClasses
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateMasterClassesRequest $request, MasterClasses $masterClasses)
+    public function update(UpdateMasterClassesRequest $request, MasterClasses $masterClasses, $id)
     {
-        //
+        $validatedData = $request->validate([
+            'class' => 'required',
+        ]);
+
+        $masterClasses->where('id', $id)->update($validatedData);
+
+        return redirect()->intended('/master_classes')->with('success', 'Your classes has been updated successfully!');
     }
 
     /**

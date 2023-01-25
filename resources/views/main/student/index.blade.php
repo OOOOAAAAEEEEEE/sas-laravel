@@ -15,25 +15,35 @@ use Carbon\Carbon;
             </div>
         @endif
     </div>
-    <div class="col-5">
-        
+    <div class="col-4">
+        <form action="?times=365&search=" class="d-flex my-2 my-lg-0" method="GET">
+            <input class="form-control me-sm-2" name="search" type="text" placeholder="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
     </div>
-    <div class="col-2">
-            <form action="?=" method="get">
-                <div class="mb-3">
-                    <label for="times" class="form-label">Filter</label>
-                    <select class="form-select form-select" name="times" id="times">
-                        <option value="">Filter Times</option>
-                        <option value="30">30 Days</option>
-                        <option value="7">7 Days</option>
-                        <option value="1">1 Days</option>
-                    </select>
-                </div>
-                <button class="btn btn-primary"> Filter </button>
-            </form>
+    <div class="col-4">
+        <form action="?" method="get">
+            <div class=" input-group mb-3">
+                <select class="form-select form-select" name="times" id="times">
+                    <option value="{{ $times }}"> Currently Selected: {{ $times }} Days </option>
+                    <option value="365">1 Year recently</option>
+                    <option value="240">8 Month recently</option>
+                    <option value="120">4 Month recently</option>
+                    <option value="60">2 Month recently</option>
+                    <option value="30">1 Month recently</option>
+                    <option value="7">7 Days recently</option>
+                    <option value="1">1 Days recently</option>
+                </select> 
+                <button class="btn btn-primary"> <i class="bi bi-funnel"></i> </button>
+                <a href="#" class="btn btn-success"> <i class="bi bi-file-earmark-spreadsheet"></i> </a>
+            </div>
+        </form>      
     </div>
     <div class="col-1">
-        <a href="#" class="btn btn-success"> <i class="bi bi-file-earmark-spreadsheet"></i> </a>
+        
+    </div>
+    <div class="col-1">
+       
     </div>
 </div>
 
@@ -74,4 +84,6 @@ use Carbon\Carbon;
         @endforeach
     </tbody>
 </table>
+
+{{ $posts->links() }}
 @endsection

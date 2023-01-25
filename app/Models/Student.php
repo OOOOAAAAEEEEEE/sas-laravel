@@ -5,7 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class Student extends Model
 {
@@ -18,7 +19,7 @@ class Student extends Model
     public function perClass($id, $times)
     {
 
-        $interval = now()->subDays($times);
+        $interval = now('Asia/Jakarta')->subDays($times);
 
         return  DB::table('students')
             ->join('users', 'user_id', '=', 'users.id')
@@ -35,6 +36,23 @@ class Student extends Model
                 students.updated_at'
             )
             ->where('master_classes.id', '=', $id)
-            ->where('students.created_at', '>=', $interval)->get();
+            ->where('students.created_at', '>=', $interval)
+            ->orderByDesc('students.created_at');
+    }
+
+    public function checkingAbsence()
+    {
+        $today = Carbon::today('Asia/Jakarta');
+        $yesterday = Carbon::yesterday('Asia/Jakarta');
+        $tomorrow = Carbon::tomorrow('Asia/Jakarta');
+
+        return Student::where('user_id', auth()->user()->id)
+            ->whereBetween('created_at', [$today, $tomorrow])
+            ->exists();
+    }
+
+    public function search($search)
+    {
+        return Student::where('user_id', 'like', "%$search%");
     }
 }

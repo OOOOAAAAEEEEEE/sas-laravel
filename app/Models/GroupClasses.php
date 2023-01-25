@@ -19,8 +19,7 @@ class GroupClasses extends Model
             master_classes_id AS classesID, 
             master_classes.class AS masterClass, 
             group_classes.created_at, 
-            group_classes.updated_at')
-            ->get();
+            group_classes.updated_at');
     }
 
     protected $guarded = [

@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\MasterStatus;
+use App\Models\Student;
 use App\Http\Requests\StoreMasterStatusRequest;
 use App\Http\Requests\UpdateMasterStatusRequest;
+
+use function Ramsey\Uuid\v1;
 
 class MasterStatusController extends Controller
 {
@@ -13,11 +16,12 @@ class MasterStatusController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Student $student)
     {
         return view('main.master.status.index', [
             'title' => 'Master Status',
             'posts' => MasterStatus::latest()->paginate(15),
+            'check' => $student->checkingAbsence(),
         ]);
     }
 
@@ -26,9 +30,12 @@ class MasterStatusController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Student $student)
     {
-        //
+        return view('main.master.status.create', [
+            'title' => 'Add Master Status',
+            'check' => $student->checkingAbsence(),
+        ]);
     }
 
     /**
@@ -39,7 +46,13 @@ class MasterStatusController extends Controller
      */
     public function store(StoreMasterStatusRequest $request)
     {
-        //
+        $validateData = $request->validate([
+            'status' => 'required',
+        ]);
+
+        MasterStatus::create($validateData);
+
+        return redirect()->intended('/master_status')->with('success', 'Your item has been added successfully!');
     }
 
     /**
@@ -59,9 +72,12 @@ class MasterStatusController extends Controller
      * @param  \App\Models\MasterStatus  $masterStatus
      * @return \Illuminate\Http\Response
      */
-    public function edit(MasterStatus $masterStatus)
+    public function edit(MasterStatus $masterStatus, Student $student)
     {
-        //
+        return view('main.master.status.edit', [
+            'title' => 'Edit Master Status',
+            'check' => $student->checkingAbsence(),
+        ]);
     }
 
     /**
@@ -71,9 +87,15 @@ class MasterStatusController extends Controller
      * @param  \App\Models\MasterStatus  $masterStatus
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateMasterStatusRequest $request, MasterStatus $masterStatus)
+    public function update(UpdateMasterStatusRequest $request, MasterStatus $masterStatus, $id)
     {
-        //
+        $validateData = $request->validate([
+            'status' => 'required',
+        ]);
+
+        $masterStatus->where('id', $id)->udpate($validateData);
+
+        return redirect()->intended('/master_status')->with('success', 'Your item has been updated successfully!');
     }
 
     /**
@@ -82,8 +104,10 @@ class MasterStatusController extends Controller
      * @param  \App\Models\MasterStatus  $masterStatus
      * @return \Illuminate\Http\Response
      */
-    public function destroy(MasterStatus $masterStatus)
+    public function destroy(MasterStatus $masterStatus, $id)
     {
-        //
+        $masterStatus->where('id', $id)->delete();
+
+        return redirect()->intended('/master_status')->with('success', 'Your item has been updated successfully!');
     }
 }

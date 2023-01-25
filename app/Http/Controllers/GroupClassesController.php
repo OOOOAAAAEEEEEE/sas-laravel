@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\GroupClasses;
+use App\Models\Student;
+use App\Models\MasterStatus;
 use App\Http\Requests\StoreGroupClassesRequest;
 use App\Http\Requests\UpdateGroupClassesRequest;
 
@@ -13,11 +15,13 @@ class GroupClassesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(GroupClasses $groupClasses)
+    public function index(GroupClasses $groupClasses, Student $student, MasterStatus $masterStatus)
     {
         return view('main.groupclasses.index', [
             'title' => 'Group Classes',
-            'posts' => $groupClasses->JoinMasterKelas(),
+            'posts' => $groupClasses->JoinMasterKelas()->paginate(15),
+            'check' => $student->checkingAbsence(),
+            'statuses' => $masterStatus->all()->skip(1),
         ]);
     }
 

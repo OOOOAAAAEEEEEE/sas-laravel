@@ -24,10 +24,11 @@ Route::get('/login', [AuthenticateController::class, 'index'])->middleware('gues
 Route::post('/login', [AuthenticateController::class, 'authenticator'])->middleware('guest');
 Route::get('/register', [AuthenticateController::class, 'register']);
 Route::post('/register', [AuthenticateController::class, 'storeAcc']);
-Route::get('/logout', [AuthenticateController::class, 'logout'])->middleware('auth');
+Route::post('/logout', [AuthenticateController::class, 'logout'])->middleware('auth');
 
 Route::resource('/dashboard', DateIndexController::class)->middleware('auth')->except(['edit', 'update', 'create']);
 Route::resource('/groupclasses', GroupClassesController::class)->middleware('auth');
 Route::resource('/studentabsence', StudentController::class)->middleware('auth');
-Route::resource('/master_classes', MasterClassesController::class)->middleware('auth');
+Route::get('/studentabsence/{id}/{times}', [StudentController::class])->middleware('auth');
+Route::resource('/master_class', MasterClassesController::class)->middleware('auth');
 Route::resource('/master_status', MasterStatusController::class)->middleware('auth');
