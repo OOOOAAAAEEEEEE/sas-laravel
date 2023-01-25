@@ -148,5 +148,9 @@ class DatabaseSeeder extends Seeder
             'master_classes_id' => '12'
         ]);
         //End Group Classes
+
+        //Students
+        // Student::factory(500)->create();
+        //END Students
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Models\Student;
 use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
@@ -36,7 +37,16 @@ class StudentController extends Controller
      */
     public function store(StoreStudentRequest $request)
     {
-        //
+        $validatedData = $request->validate([
+            'user_id' => '',
+            'master_statuses_id' => 'required',
+        ]);
+
+        $validatedData['user_id'] = auth()->user()->id;
+
+        Student::create($validatedData);
+
+        return redirect()->intended('/groupclasses')->with('success', 'Your absence has been added successfully!');
     }
 
     /**
@@ -45,9 +55,15 @@ class StudentController extends Controller
      * @param  \App\Models\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function show(Student $student)
+    public function show(Student $student, $id, Request $request)
     {
-        //
+
+        $times = $request->times;
+
+        return view('main.student.index', [
+            'title' => 'Students Absence',
+            'posts' => $student->perClass($id, $times),
+        ]);
     }
 
     /**

@@ -39,13 +39,13 @@
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $post->masterClass }}</td>
                 <td>
-                    <a href="/studentabsence/{{ $post->groupID }}" class="badge bg-info border-0"> <i class="bi bi-eye"></i></a>
+                    <a href="/studentabsence/{{ $post->classesID }}?times=1" class="badge bg-info border-0"> <i class="bi bi-eye"></i></a>
                     {{-- <a href="/dashboard/{{ $post->id }}/edit" class="bg-warning badge border-0"> <i class="bi bi-pencil-square"></i></a> --}}
-                    <form class="d-inline" action="/dashboard/{{ $post->groupID }}" method="post">
+                    {{-- <form class="d-inline" action="/dashboard/{{ $post->groupID }}" method="post">
                         @csrf
                         @method('delete')
                         <button type="submit" class="bg-danger badge border-0" onclick="return confirm('Are you sure you want to delete this item?')"> <i class="bi bi-calendar2-x"></i> </button>
-                    </form>
+                    </form> --}}
                 </td>
             </tr>
         @endforeach

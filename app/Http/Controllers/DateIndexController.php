@@ -59,11 +59,6 @@ class DateIndexController extends Controller
      */
     public function show(GroupClasses $groupClasses)
     {
-
-        return view('main.groupclasses.index', [
-            'title' => 'Group Classes',
-            'posts' => $groupClasses->JoinMasterKelas(),
-        ]);
     }
 
     /**

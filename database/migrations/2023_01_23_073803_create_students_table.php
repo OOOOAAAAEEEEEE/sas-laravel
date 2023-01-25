@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('user_id');
             $table->string('master_statuses_id');
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }

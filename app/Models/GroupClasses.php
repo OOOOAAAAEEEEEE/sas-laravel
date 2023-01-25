@@ -14,7 +14,13 @@ class GroupClasses extends Model
     {
         return DB::table('group_classes')
             ->join('master_classes', 'group_classes.master_classes_id', '=', 'master_classes.id')
-            ->selectRaw('group_classes.id AS groupID,master_classes_id AS classesID, master_classes.class AS masterClass, group_classes.created_at, group_classes.updated_at')->get();
+            ->selectRaw('
+            group_classes.id AS groupID, 
+            master_classes_id AS classesID, 
+            master_classes.class AS masterClass, 
+            group_classes.created_at, 
+            group_classes.updated_at')
+            ->get();
     }
 
     protected $guarded = [

@@ -13,9 +13,12 @@ class GroupClassesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(GroupClasses $groupClasses)
     {
-        //
+        return view('main.groupclasses.index', [
+            'title' => 'Group Classes',
+            'posts' => $groupClasses->JoinMasterKelas(),
+        ]);
     }
 
     /**

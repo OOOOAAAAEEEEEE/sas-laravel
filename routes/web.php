@@ -21,7 +21,9 @@ use App\Http\Controllers\StudentController;
 
 Route::get('/', [AuthenticateController::class, 'index'])->middleware('guest')->name('login');
 Route::get('/login', [AuthenticateController::class, 'index'])->middleware('guest');
-Route::post('/login', [AuthenticateController::class, 'authenticatetor'])->middleware('guest');
+Route::post('/login', [AuthenticateController::class, 'authenticator'])->middleware('guest');
+Route::get('/register', [AuthenticateController::class, 'register']);
+Route::post('/register', [AuthenticateController::class, 'storeAcc']);
 Route::get('/logout', [AuthenticateController::class, 'logout'])->middleware('auth');
 
 Route::resource('/dashboard', DateIndexController::class)->middleware('auth')->except(['edit', 'update', 'create']);
