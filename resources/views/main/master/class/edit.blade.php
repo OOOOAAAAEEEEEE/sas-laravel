@@ -8,7 +8,7 @@
             </div>
         </div>
         <div class="card-body">
-            <form action="/master_classes/{{ $post[0]->id }}" method="post">
+            <form action="/master_class/{{ $post[0]->id }}" method="post">
             @method('patch')
             @csrf
             <label class="form-label" for="class"> Nama Kelas</label>

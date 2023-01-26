@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\MasterClasses;
+use App\Models\MasterStatus;
 use App\Models\Student;
 use App\Models\GroupClasses;
 use App\Http\Requests\StoreMasterClassesRequest;
@@ -15,12 +16,13 @@ class MasterClassesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Student $student)
+    public function index(Student $student, MasterStatus $masterStatus)
     {
         return view('main.master.class.index', [
             'title' => 'Master Classes',
             'posts' => MasterClasses::select()->paginate(15),
             'check' => $student->checkingAbsence(),
+            'statuses' => $masterStatus->all()->skip(1),
         ]);
     }
 
@@ -29,11 +31,12 @@ class MasterClassesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Student $student)
+    public function create(Student $student, MasterStatus $masterStatus)
     {
         return view('main.master.class.create', [
             'title' => 'Add Master Class',
             'check' => $student->checkingAbsence(),
+            'statuses' => $masterStatus->all()->skip(1),
         ]);
     }
 
@@ -57,7 +60,7 @@ class MasterClassesController extends Controller
             'master_classes_id' => $classID->id,
         ]);
 
-        return redirect()->intended('/master_classes')->with('success', 'Your data has been create successfully!');
+        return redirect()->intended('/master_class')->with('success', 'Your data has been create successfully!');
     }
 
     /**
@@ -77,12 +80,13 @@ class MasterClassesController extends Controller
      * @param  \App\Models\MasterClasses  $masterClasses
      * @return \Illuminate\Http\Response
      */
-    public function edit(MasterClasses $masterClasses, Student $student)
+    public function edit(MasterClasses $masterClasses, Student $student, MasterStatus $masterStatus)
     {
         return view('main.master.class.edit', [
             'title' => 'Is there something wrong in here?',
             'post' => $masterClasses->all(),
             'check' => $student->checkingAbsence(),
+            'statuses' => $masterStatus->all()->skip(1),
         ]);
     }
 

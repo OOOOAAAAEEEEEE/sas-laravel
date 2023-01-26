@@ -8,7 +8,7 @@
             </div>
         </div>
         <div class="card-body">
-            <form action="/master_classes" method="post">
+            <form action="/master_class" method="post">
             @csrf
             <label class="form-label" for="class"> Nama Kelas</label>
             <input class="form-control @error('class')

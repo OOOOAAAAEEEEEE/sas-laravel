@@ -29,6 +29,5 @@ Route::post('/logout', [AuthenticateController::class, 'logout'])->middleware('a
 Route::resource('/dashboard', DateIndexController::class)->middleware('auth')->except(['edit', 'update', 'create']);
 Route::resource('/groupclasses', GroupClassesController::class)->middleware('auth');
 Route::resource('/studentabsence', StudentController::class)->middleware('auth');
-Route::get('/studentabsence/{id}/{times}', [StudentController::class])->middleware('auth');
 Route::resource('/master_class', MasterClassesController::class)->middleware('auth');
 Route::resource('/master_status', MasterStatusController::class)->middleware('auth');

@@ -16,12 +16,13 @@ class MasterStatusController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Student $student)
+    public function index(Student $student, MasterStatus $masterStatus)
     {
         return view('main.master.status.index', [
             'title' => 'Master Status',
             'posts' => MasterStatus::latest()->paginate(15),
             'check' => $student->checkingAbsence(),
+            'statuses' => $masterStatus->all()->skip(1),
         ]);
     }
 
@@ -30,11 +31,12 @@ class MasterStatusController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Student $student)
+    public function create(Student $student, MasterStatus $masterStatus)
     {
         return view('main.master.status.create', [
             'title' => 'Add Master Status',
             'check' => $student->checkingAbsence(),
+            'statuses' => $masterStatus->all()->skip(1),
         ]);
     }
 
@@ -77,6 +79,7 @@ class MasterStatusController extends Controller
         return view('main.master.status.edit', [
             'title' => 'Edit Master Status',
             'check' => $student->checkingAbsence(),
+            'statuses' => $masterStatus->all()->skip(1),
         ]);
     }
 

@@ -7,6 +7,7 @@ use App\Models\GroupClasses;
 use App\Models\Student;
 use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
+use App\Models\MasterStatus;
 
 class StudentController extends Controller
 {
@@ -58,7 +59,7 @@ class StudentController extends Controller
      * @param  \App\Models\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function show(Student $student, $id, Request $request)
+    public function show(Student $student, $id, Request $request, MasterStatus $masterStatus)
     {
 
         $times = $request->times;
@@ -71,6 +72,7 @@ class StudentController extends Controller
             'posts' => $student->perClass($id, $times)->paginate(15),
             'times' => $times,
             'check' => $student->checkingAbsence(),
+            'statuses' => $masterStatus->all()->skip(1),
         ]);
     }
 
